@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>入魔入佛</title>
+  <link rel="shortcut icon" href="favicon.png"/>
+  <script>
+    // PUBLIC CONFIG
+    (function () {
+      const config_data_str = localStorage.getItem('APP_CONFIG')
+      let config_data = {
+        url: [{
+          name: '开发环境',
+          api_map_url: 'http://rmrf.pi.sa0.online/api/get?client=admin',
+          base_assets_url: 'http://rmrf.pi.sa0.online',
+          active: true
+        }],
+        success_code: 200,
+        error_message: '网络请求发生错误',
+        loading: true,
+        title: document.title,
+        app_theme: '#409eff',
+        version: '最后更新时间 2024年6月16日 00:29:24',
+        token_key: 'CA52292B-C1EA-45B6-BE4A-510707577D7F',
+        should_login_code: [100002, 100003]
+      }
+      window.CONFIG_RESET_DATA = JSON.parse(JSON.stringify(config_data))
+      if (!!config_data_str) config_data.api = JSON.parse(config_data_str).api
+      localStorage.setItem('APP_CONFIG', JSON.stringify(config_data))
+    })()
+    // PUBLIC CONFIG END
+  </script>
+</head>
+<body>
+<div id="app"></div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
