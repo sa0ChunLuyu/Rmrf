@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "lu-code-vue-user",
+  "packageManager": "pnpm@7.0.0",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite --port 3333 --open --host",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@icon-park/vue-next": "^1.4.2",
+    "@vueuse/core": "^8.4.2",
+    "axios": "^0.26.1",
+    "element-plus": "^2.3.8",
+    "normalize.css": "^8.0.1",
+    "pinia": "^2.0.14",
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.15"
+  },
+  "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "pnpm": "^7.0.1",
+    "unocss": "^0.33.2",
+    "unplugin-auto-import": "^0.7.1",
+    "unplugin-vue-components": "^0.19.5",
+    "vite": "^2.9.9",
+    "vite-plugin-pages": "^0.23.0",
+    "vite-plugin-vue-layouts": "^0.6.0"
+  }
+}
