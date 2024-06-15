@@ -209,12 +209,31 @@ class AdminController extends Controller
   public function info()
   {
     Login::admin();
+    $token_ip_info = [
+      'ip' => Login::$token->ip,
+      'region' => Login::$token->region,
+      'created_at' => date("Y-m-d H:i:s", strtotime(Login::$token->created_at)),
+    ];
+    $last_time_token = AdminToken::where('admin', Login::$info->id)
+      ->where('id', '!=', Login::$token->id)
+      ->orderBy('id', 'desc')->first();
+    if ($last_time_token) {
+      $last_time_token_ip_info = [
+        'ip' => $last_time_token->ip,
+        'region' => $last_time_token->region,
+        'created_at' => date("Y-m-d H:i:s", strtotime($last_time_token->created_at)),
+      ];
+    } else {
+      $last_time_token_ip_info = false;
+    }
     return Yo::echo([
       'info' => [
         'id' => Login::$info->id,
         'nickname' => Login::$info->nickname,
         'avatar' => Login::$info->avatar,
         'initial_password' => Login::$info->initial_password,
+        'token_ip_info' => $token_ip_info,
+        'last_time_token_ip_info' => $last_time_token_ip_info,
       ]
     ]);
   }
