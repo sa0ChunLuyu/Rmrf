@@ -1,43 +1,37 @@
-# 入魔入佛
+GatewayClient
+=================
+`composer install`
 
-入魔入佛的初衷，是希望开发一个用于快速搭建网站前台，接口和中后台管理网站的代码模板项目。
+`composer require workerman/gatewayclient`
 
-由于第一代的目录结构设计不合理，所以重新设计了目录结构。把每个模块都独立出来，建立独立的 git 分支，方便管理。
+```php
+use GatewayClient\Gateway;
 
-目前包含以下模块：
+Gateway::$registerAddress = '127.0.0.1:4001';
 
-- Laravel：Laravel 后端接口
-- Admin：后台管理
-- Vue3： Vue3 空项目
-- Uniapp：uni-app 空项目
-- Gateway：Workerman Gateway 空项目
-- Vitepress：Vitepress 空项目
-- Doc：文档分支
-## 贡献指南
+Gateway::bindUid($client_id, $uid);
+Gateway::joinGroup($client_id, $group_id);
 
-如果您发现任何问题或有改进建议，请随时提出 issue 或提交 pull 请求。我们欢迎您的贡献！
+Gateway::sendToUid($uid, $message);
+Gateway::sendToGroup($group, $message);
 
-## 许可证
-
-入魔入佛使用 [MIT 许可证](https://opensource.org/licenses/MIT)。请查阅 LICENSE 文件了解更多详情。
-
-## 联系我们
-
-如果您有任何疑问或需要进一步的帮助，请联系我们：[sa0Chun_luyu@aliyun.com](mailto:sa0Chun_luyu@aliyun.com)。感谢您的支持！
-
----
-
-请注意，入魔入佛仅作为一个项目初始模板，您可以根据自己的需求进行修改和扩展。希望这个模板能够帮助您快速启动项目并提供良好的开发体验！
-
-## 免责声明
-
-本模板仅供合法目的使用，禁止使用本模板编写任何违法程序或进行非法活动。使用者必须遵守国家和地区的法律法规，不得利用本模板从事任何违法行为，包括但不限于：
-
-* 侵犯他人的隐私权、知识产权或其他合法权益；
-* 发布、传播或利用恶意软件、病毒、木马等危害网络安全的程序；
-* 进行网络诈骗、网络攻击、网络钓鱼等违法活动；
-* 利用本模板从事任何违法、违规的行为。
-
-使用本模板所造成的一切后果由使用者自行承担，开发者不承担任何责任。本模板仅提供技术支持和开发工具，不对使用者使用本模板的目的、行为和后果承担任何责任。使用者在使用本模板时应自行评估风险，并承担由此产生的任何损失或损害。
-
-请在使用本模板之前详细阅读并理解上述说明和免责声明。如果您不同意或无法遵守上述要求，请勿使用本模板。如果您对使用本模板的合法性有任何疑问，请咨询法律专业人士的意见。
+Gateway::sendToAll($data);
+Gateway::sendToClient($client_id, $data);
+Gateway::closeClient($client_id);
+Gateway::isOnline($client_id);
+Gateway::bindUid($client_id, $uid);
+Gateway::isUidOnline($uid);
+Gateway::getClientIdByUid($uid);
+Gateway::unbindUid($client_id, $uid);
+Gateway::sendToUid($uid, $data);
+Gateway::joinGroup($client_id, $group);
+Gateway::sendToGroup($group, $data);
+Gateway::leaveGroup($client_id, $group);
+Gateway::getClientCountByGroup($group);
+Gateway::getClientSessionsByGroup($group);
+Gateway::getAllClientCount();
+Gateway::getAllClientSessions();
+Gateway::setSession($client_id, $session);
+Gateway::updateSession($client_id, $session);
+Gateway::getSession($client_id);
+```
