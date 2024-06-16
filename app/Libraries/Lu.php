@@ -43,7 +43,7 @@ class Lu
   {
     if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS' && env('REQUEST_LOG') && !self::$request) {
       $request_url = explode('?', $_SERVER['REQUEST_URI'])[0];
-      if (str_contains($request_url, 'WanLiu')) {
+      if (!str_contains($request_url, '/WanLiu/')) {
         self::CheckTableName();
         self::$spend = self::time();
         $token = '';

@@ -44,7 +44,7 @@ class AdminController extends Controller
     if ($admin_account) Yo::error_echo(100023);
     $admin = new Admin();
     $admin->nickname = $request->post('nickname');
-    $admin->avatar = $request->post('avatar');
+    $admin->avatar = $request->post('avatar') ?? '';
     $admin->admin_auth_group = $request->post('admin_auth_group');
     $admin->initial_password = $request->post('initial_password');
     $admin->status = $request->post('status');
@@ -70,7 +70,7 @@ class AdminController extends Controller
     $admin_account = AdminAccount::where('admin', $id)->where('del', 2)->first();
     if (!$admin_account) Yo::error_echo(100001, ['管理员']);
     $admin->nickname = $request->post('nickname');
-    $admin->avatar = $request->post('avatar');
+    $admin->avatar = $request->post('avatar') ?? '';
     $admin->admin_auth_group = $request->post('admin_auth_group');
     $admin->initial_password = $request->post('initial_password');
     $admin->status = $request->post('status');
