@@ -30,7 +30,7 @@ export const $api = async (url_key, data = {}, opt = {}) => {
   }
   const $store = useStore()
   if (!(url_key in $store.api_map)) {
-    const api_map = await $post({url: opt_data.api_map_url}, true)
+    const api_map = await $post({url: opt_data.api_map_url}, opt_data)
     if (api_map.code !== 200) {
       window.$message().error('获取接口失败')
       return false
