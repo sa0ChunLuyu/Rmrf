@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>入魔入佛</title>
-    <link rel="shortcut icon" href="favicon.png"/>
-    <script>
-      // PUBLIC CONFIG
-      (function () {
-        const config_data_str = localStorage.getItem('APP_CONFIG')
-        let config_data = {
-          url: [{
-            api_map_url: 'http://localhost:8000/api/map',
-            base_assets_url: 'http://localhost:8000',
-            active: true
-          }],
-          success_code: 200,
-          error_message: '网络请求发生错误',
-          loading: true,
-          title: document.title,
-          app_theme: '#1c8eee',
-          version: '240615'
-        }
-        window.CONFIG_RESET_DATA = JSON.parse(JSON.stringify(config_data))
-        if (!!config_data_str) config_data.api = JSON.parse(config_data_str).api
-        localStorage.setItem('APP_CONFIG', JSON.stringify(config_data))
-      })()
-      // PUBLIC CONFIG END
-    </script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>入魔入佛</title>
+  <link rel="shortcut icon" href="favicon.png"/>
+  <script>
+    // PUBLIC CONFIG
+    (function () {
+      const config_data_str = localStorage.getItem('APP_CONFIG')
+      let config_data = {
+        url: [{
+          name: '开发环境',
+          api_map_url: 'http://rmrf.pi.sa0.online/api/get',
+          base_assets_url: 'http://rmrf.pi.sa0.online',
+          active: true
+        }],
+        success_code: 200,
+        error_message: '网络请求发生错误',
+        loading: true,
+        title: document.title,
+        app_theme: '#409eff',
+        version: '240615'
+      }
+      window.CONFIG_RESET_DATA = JSON.parse(JSON.stringify(config_data))
+      if (!!config_data_str) config_data.api = JSON.parse(config_data_str).api
+      localStorage.setItem('APP_CONFIG', JSON.stringify(config_data))
+    })()
+    // PUBLIC CONFIG END
+  </script>
 </head>
 <body>
 <div id="app"></div>
