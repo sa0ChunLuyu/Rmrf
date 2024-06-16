@@ -63,6 +63,13 @@ class PushConfigData extends Migration
       'client' => '1',
       'login' => '2',
       'remark' => '后台 TOKEN IP 地区信息存储',
+    ], [
+      'name' => '后台账号单点登录',
+      'value' => '0',
+      'type' => '7',
+      'client' => '1',
+      'login' => '2',
+      'remark' => '',
     ]];
     foreach ($data as $datum) {
       $config = new App\Models\Config();

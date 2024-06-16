@@ -6,12 +6,28 @@ use App\Models\Upload;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Lu;
 use Yo;
 use Login;
+use GuzzleHttp\Client;
 
 class WanLiuController extends Controller
 {
+  public function get(Request $request)
+  {
+    self::check('GET');
+    $url = $request->post('url');
+    $push_header = $request->post('push_header');
+    $headers = [
+      'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+    ];
+    foreach ($push_header as $header => $value) {
+      $headers[$header] = $value;
+    }
+    $client = new Client(['headers' => $headers]);
+    $res = $client->request('GET', $url);
+    return $res->getBody();
+  }
+
   public function check($check_type)
   {
     $request = request();
@@ -37,6 +53,24 @@ class WanLiuController extends Controller
 
   public function token()
   {
+    Login::admin(['config-upload']);
+    $app_id = env('APP_ID');
+    $app_secret = env('APP_SECRET');
+    $time = (string)time();
+    $noise = Str::password(6);
+    $sign = [
+      'id' => $app_id,
+      'time' => $time,
+      'secret' => $app_secret,
+      'noise' => $noise,
+    ];
+    $token = md5(json_encode($sign, JSON_UNESCAPED_UNICODE));
+    return Yo::echo([
+      'token' => $token,
+      'token_appid' => $app_id,
+      'token_time' => $time,
+      'token_noise' => $noise,
+    ]);
   }
 
   public function upload(Request $request)

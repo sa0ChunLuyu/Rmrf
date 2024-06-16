@@ -19,6 +19,10 @@ class ApiMapController extends Controller
   {
     $base_url = env('APP_URL');
     return [
+      'AdminIpPoolCreate' => $base_url . '/api/Admin/IpPool/create',
+      'AdminIpPoolUpdate' => $base_url . '/api/Admin/IpPool/update',
+      'AdminIpPoolDelete' => $base_url . '/api/Admin/IpPool/delete',
+      'AdminIpPoolList' => $base_url . '/api/Admin/IpPool/list',
       'WanLiuUpload' => $base_url . '/api/WanLiu/upload',
       'AdminWanLiuToken' => $base_url . '/api/Admin/WanLiu/token',
       'AdminAdminResetPassword' => $base_url . '/api/Admin/Admin/reset_password',

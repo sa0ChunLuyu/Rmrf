@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\AdminAccount;
 use App\Models\AdminToken;
 use App\Models\Config;
+use App\Models\IpPool;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -251,15 +252,32 @@ class AdminController extends Controller
     $token->region = '';
     $region_save_config = Config::where('name', '后台IP地区信息')->first();
     if ($region_save_config->value == '1') {
-      $ip2region = new \Ip2Region();
-      $record = $ip2region->simple($ip);
-      if ($record !== false) {
-        $token->region = $record;
+      if (filter_var($ip, FILTER_VALIDATE_IP)) {
+        $ip_pool = IpPool::where('ip', $ip)->orderBy('id', 'desc')->first();
+        if (!!$ip_pool) {
+          $token->region = $ip_pool->region;
+        } else {
+          $ip2region = new \Ip2Region();
+          $record = $ip2region->simple($ip);
+          if (!!$record) {
+            $token->region = $record;
+          }
+        }
       }
     }
     // $type 1-密码登录
     $token->type = $type;
     $token->save();
+    $only_one_config = Config::where('name', '后台账号单点登录')->first();
+    if ($only_one_config->value == '1') {
+      AdminToken::where('admin', $info->id)
+        ->where('type', $type)
+        ->where('del', 2)
+        ->where('id', '!=', $token->id)
+        ->update([
+          'del' => 1
+        ]);
+    }
     return $token_str;
   }
 }

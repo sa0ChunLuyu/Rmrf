@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 $admin_path = 'Admin';
-Route::post("api/WanLiu/Upload/file", [\App\Http\Controllers\WanLiuController::class, 'upload']);
+Route::post("api/$admin_path/IpPool/create", [\App\Http\Controllers\IpPoolController::class, 'create']);
+Route::post("api/$admin_path/IpPool/update", [\App\Http\Controllers\IpPoolController::class, 'update']);
+Route::post("api/$admin_path/IpPool/delete", [\App\Http\Controllers\IpPoolController::class, 'delete']);
+Route::post("api/$admin_path/IpPool/list", [\App\Http\Controllers\IpPoolController::class, 'list']);
+Route::post("api/WanLiu/get", [\App\Http\Controllers\WanLiuController::class, 'get']);
+Route::post("api/WanLiu/upload", [\App\Http\Controllers\WanLiuController::class, 'upload']);
 Route::post("api/$admin_path/WanLiu/token", [\App\Http\Controllers\WanLiuController::class, 'token']);
 Route::post("api/$admin_path/Admin/reset_password", [\App\Http\Controllers\AdminController::class, 'reset_password']);
 Route::post("api/$admin_path/Config/create", [\App\Http\Controllers\ConfigController::class, 'create']);
