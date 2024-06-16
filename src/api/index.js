@@ -14,6 +14,14 @@ const getApiActive = () => {
   }
   return $config.value.url[0]
 }
+export const $url = (url_key) => {
+  const $store = useStore()
+  if (url_key in $store.api_map) {
+    return $store.api_map[url_key]
+  } else {
+    return ''
+  }
+}
 export const $api = async (url_key, data = {}, opt = {}) => {
   const opt_data = {
     ...$config.value,

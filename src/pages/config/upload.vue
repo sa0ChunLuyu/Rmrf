@@ -5,12 +5,14 @@
  * date：2023年8月10日 10:20:24
  */
 import {
-  $api, $response, $image, $base64
+  $url, $api, $response, $image, $base64
 } from '~/api'
 import $router from '~/router'
 import {onBeforeRouteUpdate} from "vue-router";
 import {$copy} from "~/tool/copy";
+import CryptoJS from 'crypto-js';
 
+const upload_button_show = ref(false)
 const default_page_options = {
   search: '',
   time: [null, null],
@@ -29,6 +31,7 @@ const UploadList = async () => {
   table_ref.value.setCurrentRow(null)
   const response = await $api('AdminUploadList', page_options.value)
   $response(response, () => {
+    upload_button_show.value = true
     table_list.value = response.data.list.data
     last_page.value = response.data.list.last_page
   })
@@ -132,9 +135,150 @@ const copyLinkClick = (link) => {
     window.$message().success('复制成功')
   })
 }
+
+const upload_file_data = ref({
+  token: '',
+  token_time: 0,
+  token_appid: '',
+  token_noise: '',
+  type: '',
+  file_name: '',
+})
+const UploadToken = async (type, file) => {
+  const response = await $api('AdminWanLiuToken', {id: 1})
+  $response(response, () => {
+    upload_file_data.value = {
+      ...upload_file_data.value,
+      type: type,
+      file_name: file.name,
+      ...response.data,
+    }
+  })
+}
+
+const fileUploadSuccess = (response) => {
+  window.$loading().close()
+  $response(response, () => {
+    UploadList()
+  })
+}
+
+const fileBeforeUpload = async (file) => {
+  let max_size = 5
+  if (file.size > 1024 * 1024 * max_size) {
+    window.$message().error(`文件大小超过${max_size}M请使用分片上传`)
+    return false
+  }
+  await UploadToken('File', file)
+  window.$loading().open('上传中')
+  return true
+}
+
+const chunk_upload_data = ref({
+  count: 0,
+  index: 0,
+})
+const chunk_upload_show = ref(false)
+const progressFormat = (percentage) => {
+  return percentage >= 100 ? '正在合并' : `${percentage}%`;
+}
+
+const chunkChange = async (file) => {
+  let mix_size = 2
+  if (file.size < 1024 * 1024 * mix_size) {
+    window.$message().error(`文件大小少于${mix_size}M请使用文件上传`)
+  } else {
+    await chunkSlice(file)
+  }
+}
+const chunkSlice = async (file) => {
+  await UploadToken('Multipart', file)
+  const file_size = file.size;
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    const wordArray = CryptoJS.lib.WordArray.create(event.target.result);
+    const md5 = CryptoJS.MD5(wordArray).toString();
+    const chunk_size = 1024 * 1024;
+    const chunks = Math.ceil(file_size / chunk_size);
+    const file_chunks = [];
+    for (let i = 0; i < chunks; i++) {
+      const start = i * chunk_size;
+      const end = Math.min(start + chunk_size, file_size);
+      const chunk = file.raw.slice(start, end);
+      file_chunks.push(chunk);
+    }
+    const formData = new FormData();
+    for (let i in upload_file_data.value) {
+      formData.append(i, upload_file_data.value[i]);
+    }
+    formData.append('file', file_chunks[0]);
+    formData.append('md5', md5);
+    formData.append('index', 1);
+    window.$loading().open('正在创建分片')
+    const response = await $api('WanLiuUpload', formData, {
+      loading: false
+    })
+    window.$loading().close()
+    $response(response, () => {
+      chunkAction(file, md5, file_chunks, response.data.list, 1)
+    })
+  };
+  reader.readAsArrayBuffer(file.raw);
+}
+
+const chunkAction = async (file, md5, file_chunks, success_list, index) => {
+  chunk_upload_show.value = true
+  chunk_upload_data.value.count = file_chunks.length
+  if ((new Date().getTime() / 1000) - upload_file_data.value.token_time > (60 * 2)) {
+    await UploadToken('Multipart', file)
+  }
+  chunk_upload_data.value.index = index
+  if (index <= file_chunks.length) {
+    if (success_list.indexOf(index) === -1) {
+      const formData = new FormData();
+      for (let i in upload_file_data.value) {
+        formData.append(i, upload_file_data.value[i]);
+      }
+      formData.append('index', index);
+      formData.append('md5', md5);
+      formData.append('file', file_chunks[index - 1]);
+      const response = await $api('WanLiuUpload', formData, {
+        loading: false
+      })
+      $response(response, () => {
+        chunkAction(file, md5, file_chunks, response.data.list, index + 1)
+      })
+    } else {
+      await chunkAction(file, md5, file_chunks, success_list, index + 1)
+    }
+  } else {
+    const response = await $api('WanLiuUpload', {
+      ...upload_file_data.value,
+      md5: md5,
+      index: 'end',
+    }, {
+      loading: false
+    })
+    chunk_upload_show.value = false
+    $response(response, () => {
+      UploadList()
+    })
+  }
+}
 </script>
 <template>
   <div>
+    <el-dialog v-model="chunk_upload_show" title="分片上传" width="350px"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               :show-close="false">
+      <div>
+        <el-progress
+            :format="progressFormat"
+            :percentage="Math.min(parseFloat(((chunk_upload_data.index/chunk_upload_data.count)*100).toFixed(1)),100)"></el-progress>
+      </div>
+    </el-dialog>
+
     <el-card>
       <template #header>上传管理</template>
       <div>
@@ -189,6 +333,18 @@ const copyLinkClick = (link) => {
                 <el-dropdown-item>
                   <el-upload :auto-upload="false" :show-file-list="false" @change="fileChange">
                     上传图片
+                  </el-upload>
+                </el-dropdown-item>
+                <el-dropdown-item v-if="upload_button_show">
+                  <el-upload :data="upload_file_data" :show-file-list="false"
+                             :action="$url('WanLiuUpload')" @success="fileUploadSuccess"
+                             :before-upload="fileBeforeUpload">
+                    <div>文件上传</div>
+                  </el-upload>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-upload :auto-upload="false" :show-file-list="false" @change="chunkChange">
+                    <div>分片上传</div>
                   </el-upload>
                 </el-dropdown-item>
               </el-dropdown-menu>
