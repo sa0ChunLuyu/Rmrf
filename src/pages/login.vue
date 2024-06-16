@@ -9,7 +9,11 @@ import {
   $image,
   $response,
 } from '~/api'
-import {useSaveTokenType, useToken, useSessionToken, useStore, useConfig, useProxyShow} from "~/store";
+import {
+  useSaveTokenType,
+  useIpNotification,
+  useToken, useSessionToken, useStore, useConfig, useProxyShow
+} from "~/store";
 import {onBeforeRouteUpdate} from "vue-router";
 import $router from '~/router'
 import {getInfo} from "~/tool/info";
@@ -19,6 +23,7 @@ const $config = useConfig()
 const $store = useStore()
 const $save_token_type = useSaveTokenType()
 const $session_token = useSessionToken()
+const $ip_notification = useIpNotification()
 const $token = useToken()
 const login_input_data = ref({
   account: '',
@@ -87,6 +92,7 @@ const AdminLogin = async () => {
   loading_active.value = false
   $response(response, () => {
     const token = response.data.token
+    $ip_notification.value = false
     saveToken(token)
   })
 }

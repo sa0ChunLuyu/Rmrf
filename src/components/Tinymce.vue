@@ -5,8 +5,9 @@
  * date：2023年6月5日 14:04:22
  */
 import {
+  $api,
   $image,
-  $response, UploadImageAction
+  $response
 } from '~/api'
 import {onMounted} from "vue";
 
@@ -31,15 +32,15 @@ const createTinymce = () => {
     language: 'zh_CN',
     plugins: "code image axupimgs",
     toolbar: 'undo redo ' +
-      '| code axupimgs' +
-      '| formatselect fontselect fontsizeselect ' +
-      '| bold italic underline strikethrough ' +
-      '| alignleft aligncenter alignright alignjustify ' +
-      '| cut copy paste ' +
-      '| bullist numlist ' +
-      '| outdent indent ' +
-      '| blockquote removeformat ' +
-      '| subscript superscript',
+        '| code axupimgs' +
+        '| formatselect fontselect fontsizeselect ' +
+        '| bold italic underline strikethrough ' +
+        '| alignleft aligncenter alignright alignjustify ' +
+        '| cut copy paste ' +
+        '| bullist numlist ' +
+        '| outdent indent ' +
+        '| blockquote removeformat ' +
+        '| subscript superscript',
     menubar: false,
     width: 1000,
     height: 300,
@@ -51,7 +52,7 @@ const createTinymce = () => {
         reader.readAsDataURL(file);
         reader.onloadend = async (e) => {
           const base64 = e.target.result;
-          const response = await UploadImageAction({
+          const response = await $api('AdminUploadImage', {
             base64
           })
           $response(response, () => {

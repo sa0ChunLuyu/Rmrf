@@ -33,4 +33,9 @@ svg {
 .input_line_input_wrapper {
   width: 200px !important;
 }
+
+.table_item_line_wrapper {
+  display: flex;
+  align-items: center;
+}
 </style>

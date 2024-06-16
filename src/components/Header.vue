@@ -4,7 +4,7 @@
  * user：sa0ChunLuyu
  * date：2023年7月27日 17:08:28
  */
-import {useCollapsed, useRouterActive, useStore} from "~/store";
+import {useCollapsed, useIpNotification, useRouterActive, useStore} from "~/store";
 import {getInfo} from "~/tool/info";
 import {
   $api,
@@ -14,6 +14,7 @@ import {
 } from '~/api'
 import $router from '~/router'
 
+const $ip_notification = useIpNotification()
 const $store = useStore()
 const $collapsed = useCollapsed()
 onMounted(() => {
@@ -39,14 +40,16 @@ const checkUserInfo = () => {
 }
 
 const checkLastTimeIp = () => {
-  window.$notification()[
-      $store.info.token_ip_info.ip !== $store.info.last_time_token_ip_info.ip ? 'warning' : 'success'
-      ]({
-    title: '登录信息',
-    dangerouslyUseHTMLString: true,
-    position: 'bottom-right',
-    duration: $store.info.token_ip_info.ip !== $store.info.last_time_token_ip_info.ip ? 0 : 5000,
-    message: `<div>
+  if (!$ip_notification.value) {
+    $ip_notification.value = true
+    window.$notification()[
+        $store.info.token_ip_info.ip !== $store.info.last_time_token_ip_info.ip ? 'warning' : 'success'
+        ]({
+      title: '登录信息',
+      dangerouslyUseHTMLString: true,
+      position: 'bottom-right',
+      duration: $store.info.token_ip_info.ip !== $store.info.last_time_token_ip_info.ip ? 0 : 5000,
+      message: `<div>
 <b>本次登录地址:</b> ${$store.info.token_ip_info.ip}<br>
 <b>本次登录信息:</b> ${$store.info.token_ip_info.region}<br>
 <b>本次登录时间:</b> ${$store.info.token_ip_info.created_at}
@@ -57,7 +60,8 @@ const checkLastTimeIp = () => {
 <b>上次登录信息:</b> ${$store.info.last_time_token_ip_info.region}<br>
 <b>上次登录时间:</b> ${$store.info.last_time_token_ip_info.created_at}
 </div>` : ''),
-  })
+    })
+  }
 }
 
 const quitClick = () => {

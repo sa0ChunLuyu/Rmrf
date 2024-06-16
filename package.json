@@ -12,9 +12,11 @@
     "@vueuse/core": "^8.4.2",
     "axios": "^0.26.1",
     "element-plus": "^2.3.8",
+    "json-editor-vue3": "^1.0.8",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.14",
     "vue": "^3.2.33",
+    "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.0.15"
   },
   "devDependencies": {

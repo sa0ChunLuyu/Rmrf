@@ -18,3 +18,4 @@ export const useSaveTokenType = createGlobalState(() => useStorage('SAVE_TOKEN_T
 export const useRouterActive = createGlobalState(() => useStorage('ROUTER_ACTIVE', []))
 export const useCollapsed = createGlobalState(() => useStorage('COLLAPSED', false))
 export const useProxyShow = createGlobalState(() => useStorage('PROXY_SHOW', false))
+export const useIpNotification = createGlobalState(() => useStorage('IP_NOTIFICATION', false))
