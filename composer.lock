@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76b7fbccd4b32610207f5ac4ae26a6a7",
+    "content-hash": "fcca9192ea570688d3bbbbf74927c00e",
     "packages": [
         {
             "name": "brick/math",
@@ -6198,6 +6198,43 @@
                 "source": "https://github.com/wechatpay-apiv3/wechatpay-php/tree/v1.4.9"
             },
             "time": "2023-11-22T11:30:25+00:00"
+        },
+        {
+            "name": "workerman/gatewayclient",
+            "version": "v3.0.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/GatewayClient.git",
+                "reference": "0f67651ce92628d5e85d2ae45478f12b0d1e9f66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/GatewayClient/zipball/0f67651ce92628d5e85d2ae45478f12b0d1e9f66",
+                "reference": "0f67651ce92628d5e85d2ae45478f12b0d1e9f66",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GatewayClient\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "support": {
+                "issues": "https://github.com/walkor/GatewayClient/issues",
+                "source": "https://github.com/walkor/GatewayClient/tree/v3.0.17"
+            },
+            "time": "2023-11-09T13:48:46+00:00"
         },
         {
             "name": "zoujingli/ip2region",

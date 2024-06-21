@@ -14,6 +14,7 @@
     "laravel/sanctum": "^3.2",
     "laravel/tinker": "^2.8",
     "wechatpay/wechatpay": "^1.4",
+    "workerman/gatewayclient": "^3.0",
     "zoujingli/ip2region": "^2.0"
   },
   "require-dev": {

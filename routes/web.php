@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 $admin_path = 'Admin';
+Route::post("api/Example/Gateway/test", [\App\Http\Controllers\GatewayController::class, 'test']);
+Route::post("api/Example/Gateway/quit", [\App\Http\Controllers\GatewayController::class, 'quit']);
 Route::post("api/Example/Gzh/login", [\App\Http\Controllers\WxExampleController::class, 'gzh_login']);
 Route::get("api/Example/Gzh/auth", [\App\Http\Controllers\WxExampleController::class, 'gzh_auth']);
 Route::post("api/Example/Mp/refund_pay", [\App\Http\Controllers\WxExampleController::class, 'mp_refund_pay']);
