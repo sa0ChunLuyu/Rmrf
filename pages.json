@@ -11,7 +11,64 @@
 			"navigationBarTitleText": "我的"
 		}
 	}],
-	"subPackages": [],
+	"subPackages": [{
+		"root": "pages/example",
+		"pages": [{
+				"path": "mp_avatar/mp_avatar",
+				"style": {
+					"navigationBarTitleText": "微信小程序头像"
+				}
+			},
+			{
+				"path": "mp_nickname/mp_nickname",
+				"style": {
+					"navigationBarTitleText": "微信小程序昵称"
+				}
+			},
+			{
+				"path": "mp_pay/mp_pay",
+				"style": {
+					"navigationBarTitleText": "微信小程序支付"
+				}
+			},
+			{
+				"path": "pinia/pinia",
+				"style": {
+					"navigationBarTitleText": "pinia"
+				}
+			},
+			{
+				"path": "router_query/router_query",
+				"style": {
+					"navigationBarTitleText": "router_query"
+				}
+			},
+			{
+				"path": "ref/ref",
+				"style": {
+					"navigationBarTitleText": "ref"
+				}
+			},
+			{
+				"path": "mp_login/mp_login",
+				"style": {
+					"navigationBarTitleText": "微信小程序登录"
+				}
+			},
+			{
+				"path": "gzh_login/gzh_login",
+				"style": {
+					"navigationBarTitleText": "微信公众号登录"
+				}
+			},
+			{
+				"path": "mp_phone/mp_phone",
+				"style": {
+					"navigationBarTitleText": "微信小程序手机号"
+				}
+			}
+		]
+	}],
 	"tabBar": {
 		"color": "#7A7E83",
 		"selectedColor": "#333333",

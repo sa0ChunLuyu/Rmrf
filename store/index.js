@@ -5,6 +5,7 @@ import {
 export const useStore = defineStore('counter', {
 	state: () => ({
 		api_map: {},
+		count: 0,
 		loading: 0,
 	}),
 	actions: {
