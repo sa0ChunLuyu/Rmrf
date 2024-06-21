@@ -8,15 +8,13 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      {text: '开始使用', link: '/Readme/info'},
+      {text: '开始使用1', link: '/README'},
       {text: 'Github', link: 'https://github.com/sa0ChunLuyu/Rmrf'}
     ],
     sidebar: [
       {
         text: 'README',
-        items: [
-          {text: '功能特点', link: '/Readme/info'}
-        ]
+        link: '/README'
       }
     ],
     socialLinks: [

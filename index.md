@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 开始使用
-      link: /readme/info
+      link: /README
 
 features:
   - title: Laravel 10
