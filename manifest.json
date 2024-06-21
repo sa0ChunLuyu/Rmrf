@@ -1,5 +1,5 @@
 {
-    "name" : "鹿和开发模板",
+    "name" : "入魔入佛",
     "appid" : "__UNI__54F7FDE",
     "description" : "",
     "versionName" : "1.0.0",
@@ -60,6 +60,6 @@
         "router" : {
             "base" : "/h5/"
         },
-        "title" : "鹿和开发模板"
+        "title" : "入魔入佛"
     }
 }
