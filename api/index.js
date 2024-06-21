@@ -8,6 +8,14 @@ import {
 const app_path = 'App'
 let api_map_url = $config.config.api_map_url
 let base_assets_url = $config.config.base_assets_url
+export const $url = (url_key) => {
+	const $store = useStore()
+	if (url_key in $store.api_map) {
+		return $store.api_map[url_key]
+	} else {
+		return ''
+	}
+}
 export const $api = async (url_key, data = {}, opt = {}) => {
 	const opt_data = {
 		...$config,

@@ -72,14 +72,12 @@
 	<view>
 		<uni-nav-bar :border="false" fixed statusBar left-icon="left" @clickLeft="back" title="示例" />
 		<view class="nav_wrapper">
-			<!-- #ifdef MP-WEIXIN -->
 			<view v-for="(i,k) in nav_list" :key="i" @click="navItemClick(i.url)" class="nav_item_wrapper">
 				<div class="nav_item_title_wrapper">{{ i.title }}</div>
 				<div class="nav_item_icon_wrapper">
 					<uni-icons type="right" size="20"></uni-icons>
 				</div>
 			</view>
-			<!-- #endif -->
 		</view>
 	</view>
 </template>

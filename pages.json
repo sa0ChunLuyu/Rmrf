@@ -66,6 +66,12 @@
 				"style": {
 					"navigationBarTitleText": "微信小程序手机号"
 				}
+			},
+			{
+				"path": "gzh_login_callback/gzh_login_callback",
+				"style": {
+					"navigationBarTitleText": "微信公众号登录回调页面"
+				}
 			}
 		]
 	}],
