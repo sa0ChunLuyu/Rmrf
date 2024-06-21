@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 $admin_path = 'Admin';
+Route::post("api/Example/Mp/pay", [\App\Http\Controllers\WxExampleController::class, 'wx_pay']);
+Route::post("api/Example/Mp/login", [\App\Http\Controllers\WxExampleController::class, 'mp_login']);
+Route::post("api/Example/Mp/phone", [\App\Http\Controllers\WxExampleController::class, 'mp_phone']);
 Route::post("api/$admin_path/IpPool/create", [\App\Http\Controllers\IpPoolController::class, 'create']);
 Route::post("api/$admin_path/IpPool/update", [\App\Http\Controllers\IpPoolController::class, 'update']);
 Route::post("api/$admin_path/IpPool/delete", [\App\Http\Controllers\IpPoolController::class, 'delete']);

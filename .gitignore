@@ -14,6 +14,7 @@ public/storage
 public_html/storage
 public_html/hot
 
+storage/app/Pem
 storage/app/public/assets/upload
 storage/app/log
 storage/*.key

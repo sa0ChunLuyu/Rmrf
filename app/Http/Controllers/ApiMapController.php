@@ -15,6 +15,14 @@ class ApiMapController extends Controller
     ];
   }
 
+  public function mp()
+  {
+    $base_url = env('APP_URL');
+    return [
+      'ExampleMpPay' => $base_url . '/api/Example/Mp/pay'
+    ];
+  }
+
   public function admin()
   {
     $base_url = env('APP_URL');
@@ -70,6 +78,9 @@ class ApiMapController extends Controller
     switch ($client) {
       case 'admin':
         $list = array_merge($list, self::admin());
+        break;
+      case 'mp':
+        $list = array_merge($list, self::mp());
         break;
     }
     return Yo::echo([
