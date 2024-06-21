@@ -23,6 +23,16 @@ class ApiMapController extends Controller
     ];
   }
 
+  public function gzh()
+  {
+    $base_url = env('APP_URL');
+    return [
+      'ExampleGzhLogin' => $base_url . '/api/Example/Gzh/login',
+      'ExampleGzhAuth' => $base_url . '/api/Example/Gzh/Auth',
+      'ExampleGzhJump' => 'http://192.168.1.59:5173/h5/#/pages/example/gzh_login_callback/gzh_login_callback?',
+    ];
+  }
+
   public function admin()
   {
     $base_url = env('APP_URL');
@@ -81,6 +91,9 @@ class ApiMapController extends Controller
         break;
       case 'mp':
         $list = array_merge($list, self::mp());
+        break;
+      case 'gzh':
+        $list = array_merge($list, self::gzh());
         break;
     }
     return Yo::echo([

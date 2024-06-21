@@ -37,7 +37,7 @@ class WxExampleController extends Controller
     ]);
   }
 
-  public function wx_check_pay(Request $request)
+  public function mp_check_pay(Request $request)
   {
     $appid = $request->post('UNIAPP_APPID');
     $wx_config_data = MoreConfig::where('mark', $appid)->where('type', '微信小程序')->first();
@@ -146,7 +146,7 @@ class WxExampleController extends Controller
     return $noncestr;
   }
 
-  public function wx_refund_pay(Request $request)
+  public function mp_refund_pay(Request $request)
   {
     $appid = $request->post('UNIAPP_APPID');
     $wx_config_data = MoreConfig::where('mark', $appid)->where('type', '微信小程序')->first();
@@ -212,7 +212,7 @@ class WxExampleController extends Controller
     return $res;
   }
 
-  public function wx_pay(Request $request)
+  public function mp_pay(Request $request)
   {
     $appid = $request->post('UNIAPP_APPID');
     $wx_config_data = MoreConfig::where('mark', $appid)->where('type', '微信小程序')->first();
@@ -246,6 +246,23 @@ class WxExampleController extends Controller
     ]);
   }
 
+  public function gzh_login(Request $request)
+  {
+    $appid = $request->post('UNIAPP_APPID');
+    $wx_config_data = MoreConfig::where('mark', $appid)->where('type', '微信公众号')->first();
+    if (!$wx_config_data) Yo::error_echo(100001, ['参数配置']);
+    $wx_config_str = $wx_config_data->config;
+    $wx_config = json_decode($wx_config_str, true);
+    $app_secret = $wx_config['AppSecret'];
+    $code = $request->post('code');
+    $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' . $appid . '&secret=' . $app_secret . '&code=' . $code . '&grant_type=authorization_code';
+    $info = file_get_contents($url);
+    $response = json_decode($info, true);
+    return Yo::echo([
+      'info' => $response
+    ]);
+  }
+
   public function mp_login(Request $request)
   {
     $appid = $request->post('UNIAPP_APPID');
@@ -268,6 +285,15 @@ class WxExampleController extends Controller
     return Yo::echo([
       'info' => $response
     ]);
+  }
+
+  public function gzh_auth(Request $request)
+  {
+    $code = $request->get('code');
+    $state = $request->get('state');
+    $url = $state . "code=$code";
+    header("Location: $url");
+    exit();
   }
 
   public function mp_phone(Request $request)
