@@ -37,6 +37,52 @@ class WxExampleController extends Controller
     ]);
   }
 
+  public function wx_check_pay(Request $request)
+  {
+    $appid = $request->post('UNIAPP_APPID');
+    $wx_config_data = MoreConfig::where('mark', $appid)->where('type', '微信小程序')->first();
+    if (!$wx_config_data) Yo::error_echo(100001, ['参数配置']);
+    $wx_config_str = $wx_config_data->config;
+    $wx_config = json_decode($wx_config_str, true);
+    $pay = $wx_config['pay'][0];
+    $pay_config_data = MoreConfig::where('mark', $pay)->where('type', '微信支付')->first();
+    $pay_config_str = $pay_config_data->config;
+    $pay_config = json_decode($pay_config_str, true);
+    self::builder([
+      'appid' => $appid,
+      'pem_path' => base_path() . $pay_config['Key'],
+      'cer_path' => base_path() . $pay_config['Crt'],
+      'cer_num' => $pay_config['Number'],
+      'mchid' => $pay,
+      'v3' => $pay_config['V3'],
+    ]);
+    $out_trade_no = $request->post('out_trade_no');
+    $check = self::check($out_trade_no);
+    return Yo::echo([
+      'info' => $check
+    ]);
+  }
+
+  public function check($out_trade_no)
+  {
+    $res = false;
+    try {
+      $resp = self::$mp_instance
+        ->v3->pay->transactions->outTradeNo->_out_trade_no_
+        ->get([
+          'query' => ['mchid' => self::$mp_config['mchid']],
+          'out_trade_no' => (string)$out_trade_no,
+        ]);
+      $res = json_decode($resp->getBody(), true);
+    } catch (\Exception $e) {
+      if ($e instanceof \GuzzleHttp\Exception\RequestException && $e->hasResponse()) {
+        $r = $e->getResponse();
+        $res = json_decode($r->getBody(), true);
+      }
+    }
+    return $res;
+  }
+
   public function create($config)
   {
     $res = false;
@@ -98,6 +144,72 @@ class WxExampleController extends Controller
       $noncestr .= $charts[rand(0, $max)];
     }
     return $noncestr;
+  }
+
+  public function wx_refund_pay(Request $request)
+  {
+    $appid = $request->post('UNIAPP_APPID');
+    $wx_config_data = MoreConfig::where('mark', $appid)->where('type', '微信小程序')->first();
+    if (!$wx_config_data) Yo::error_echo(100001, ['参数配置']);
+    $wx_config_str = $wx_config_data->config;
+    $wx_config = json_decode($wx_config_str, true);
+    $pay = $wx_config['pay'][0];
+    $pay_config_data = MoreConfig::where('mark', $pay)->where('type', '微信支付')->first();
+    $pay_config_str = $pay_config_data->config;
+    $pay_config = json_decode($pay_config_str, true);
+    self::builder([
+      'appid' => $appid,
+      'pem_path' => base_path() . $pay_config['Key'],
+      'cer_path' => base_path() . $pay_config['Crt'],
+      'cer_num' => $pay_config['Number'],
+      'mchid' => $pay,
+      'v3' => $pay_config['V3'],
+    ]);
+    $out_trade_no = $request->post('out_trade_no');
+    $check = self::check($out_trade_no);
+    if (!isset($check['transaction_id'])) {
+      return Yo::echo([
+        'message' => '未查询到订单',
+        'check' => $check
+      ]);
+    }
+    $transaction_id = $check['transaction_id'];
+    $refund = self::refund([
+      'transaction_id' => $transaction_id,
+      'out_refund_no' => $out_trade_no,
+      'total' => 1,
+    ]);
+    return Yo::echo([
+      'check' => $check,
+      'refund' => $refund
+    ]);
+  }
+
+  public function refund($config)
+  {
+    $res = false;
+    try {
+      $resp = self::$mp_instance
+        ->v3->refund->domestic->refunds
+        ->post([
+          'json' => [
+            'transaction_id' => $config['transaction_id'],
+            'out_refund_no' => $config['out_refund_no'],
+            'amount' => [
+              'refund' => $config['total'],
+              'total' => $config['total'],
+              'currency' => 'CNY',
+            ],
+          ],
+        ]);
+      $res = json_decode($resp->getBody(), true);
+    } catch (\Exception $e) {
+      if ($e instanceof \GuzzleHttp\Exception\RequestException && $e->hasResponse()) {
+        $r = $e->getResponse();
+        $res = json_decode($r->getBody(), true);
+      }
+    }
+    return $res;
   }
 
   public function wx_pay(Request $request)

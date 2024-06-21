@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 $admin_path = 'Admin';
+Route::post("api/Example/Mp/refund_pay", [\App\Http\Controllers\WxExampleController::class, 'wx_refund_pay']);
+Route::post("api/Example/Mp/check_pay", [\App\Http\Controllers\WxExampleController::class, 'wx_check_pay']);
 Route::post("api/Example/Mp/pay", [\App\Http\Controllers\WxExampleController::class, 'wx_pay']);
 Route::post("api/Example/Mp/login", [\App\Http\Controllers\WxExampleController::class, 'mp_login']);
 Route::post("api/Example/Mp/phone", [\App\Http\Controllers\WxExampleController::class, 'mp_phone']);
