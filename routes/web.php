@@ -66,6 +66,4 @@ Route::post("api/$admin_path/ImageCaptcha/create", [\App\Http\Controllers\ImageC
 Route::post("api/$admin_path/Config/get", [\App\Http\Controllers\ConfigController::class, 'get']);
 Route::post("api/get", [\App\Http\Controllers\ApiMapController::class, 'get']);
 Route::any('api/yo', \App\Http\Controllers\YoController::class);
-Route::get('/', function () {
-  return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\ViewController::class, 'home']);
