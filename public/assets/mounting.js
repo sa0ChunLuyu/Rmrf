@@ -6,10 +6,10 @@ window.$box = ElMessageBox
 let loading = null
 window.$loading = () => {
   return {
-    open: () => {
+    open: (text = '加载中...') => {
       loading = ElLoading.service({
         lock: true,
-        text: '加载中...',
+        text: text,
       })
     },
     close: () => {
