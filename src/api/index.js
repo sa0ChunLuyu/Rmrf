@@ -41,8 +41,14 @@ export const $api = async (url_key, data = {}, opt = {}) => {
     window.$message().error(`接口不存在 [${url_key}]`)
     return false
   }
+  let url = $store.api_map[url_key]
+  for (let i in data) {
+    if ($store.api_map[url_key].indexOf('${' + i + '}') !== -1) {
+      url = url.replace('${' + i + '}', encodeURIComponent(data[i]))
+    }
+  }
   return await $post({
-    url: $store.api_map[url_key],
+    url,
     data
   }, opt_data)
 }
